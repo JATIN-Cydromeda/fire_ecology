@@ -24,26 +24,8 @@
 		
 		<script type="text/javascript" src="js/jquery.js"></script>
 		<script type="text/javascript" src="js/jquery-migrate.min.js"></script>
-		<script>
-			document.addEventListener('DOMContentLoaded', function() {
-			const searchInput = document.getElementById('searchInput');
-			const searchableElements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6');
-					
-			searchInput.addEventListener('input', function() {
-				const searchText = searchInput.value.toLowerCase();
-		
-				for (let i = 0; i < searchableElements.length; i++) {
-					const elementText = searchableElements[i].textContent.toLowerCase();
-			
-			    if (elementText.includes(searchText)) {
-			    	searchableElements[i].style.display = 'block';
-			    } else {
-			    	searchableElements[i].style.display = 'none';
-			    }
-			  }
-			});
-			});
-		</script>
+		<script src="https://cdn.jsdelivr.net/npm/typesense@1/dist/typesense.min.js"></script>
+
 		
 		<style type="text/css">
 			.cmsms_dynamic_cart .widget_shopping_cart_content .cart_list {
@@ -457,8 +439,8 @@
 							<div class="header_mid_inner">
 								<div class="logo_wrap">
 									<a href="index.html" title="Jatin Nature" class="logo">
-										<img src="images/logo.png" alt="Jatin Nature">
-										<img class="logo_retina" src="images/logo.png" alt="Jatin Nature" width="179" height="44">
+										<img src="images/logo.gif" alt="Jatin Nature">
+										<img class="logo_retina" src="images/logo.gif" alt="Jatin Nature" width="179" height="44">
 									</a>
 								</div>
 								<div class="resp_nav_wrap">
@@ -530,6 +512,81 @@
 						</div>
 					</div>
 				</header>
+					<div class="menu-main-container" style="position: fixed; top: 0; z-index: 1000;">
+						<ul id="searchResults" class="sub-menu">
+						</ul>
+					</div>
+					<script>
+						const searchForm = document.querySelector('form');
+						const searchInput = document.querySelector('#txtSearch');
+						const searchResultsList = document.querySelector('#searchResults');
+					  
+						// Function to search the website for keywords
+						const searchWebsite = async (keywords) => {
+						  const lowercaseKeywords = keywords.toLowerCase();
+						  const searchResults = [];
+					  
+						  // Retrieve content from all <p> and <h> tags
+						  const paragraphTags = document.querySelectorAll('p');
+						  const headingTags = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+					  
+						  paragraphTags.forEach((p) => {
+							const paragraphContent = p.textContent.toLowerCase();
+					  
+							if (paragraphContent.includes(lowercaseKeywords)) {
+							  searchResults.push({ content: p.textContent, element: p });
+							}
+						  });
+					  
+						  headingTags.forEach((h) => {
+							const headingContent = h.textContent.toLowerCase();
+					  
+							if (headingContent.includes(lowercaseKeywords)) {
+							  searchResults.push({ content: h.textContent, element: h });
+							}
+						  });
+					  
+						  return searchResults;
+						};
+					  
+						// Function to scroll to the clicked element
+						const scrollToElement = (element) => {
+						  element.scrollIntoView({ behavior: 'smooth' });
+						};
+					  
+						searchForm.addEventListener('submit', async (event) => {
+						  event.preventDefault();
+						  const searchQuery = searchInput.value.toLowerCase();
+					  
+						  // Clear previous search results
+						  searchResultsList.innerHTML = '';
+					  
+						  const searchResults = await searchWebsite(searchQuery);
+					  
+						  searchResults.forEach((result) => {
+							const li = document.createElement('li');
+							const a = document.createElement('a');
+							a.textContent = result.content;
+							a.href = 'javascript:void(0)'; // Set a JavaScript void function
+					  
+							// Scroll to the clicked element when the link is clicked
+							a.addEventListener('click', () => {
+							  scrollToElement(result.element);
+							});
+					  
+							li.appendChild(a);
+							searchResultsList.appendChild(li);
+					  
+							// Remove previous highlights and apply new highlights
+							result.element.innerHTML = result.content; // Reset content
+							const highlightRegExp = new RegExp(`(${searchQuery})`, 'gi');
+							result.element.innerHTML = result.element.innerHTML.replace(
+							  highlightRegExp,
+							  '<span class="highlight">$1</span>'
+							);
+						  });
+						});
+					  </script>		  
 	<!-- _________________________ Finish Header _________________________ -->
 	<!-- _________________________ Start Middle _________________________ -->
 				<section id="middle">
@@ -609,32 +666,39 @@
 							<div class="cmsms_row_outer_parent">
 								<div class="cmsms_row_outer">
 									<div class="cmsms_row_inner">
-										<div class="cmsms_row_margin cmsms_14141414">
-											<div class="cmsms_column one_fourth">
+										<div class="cmsms_row_margin cmsms_14141414" style="margin: 0;">
+											<div class="cmsms_column goal_hieght">
 												<div class="aligncenter">
 													<div class="cmsms_img  cmsms_image_c fadeInUp animated" data-animation="fadeInUp" data-delay="300">
 														<a href="aboutfe.html"><img src="images/recycling.jpg" alt=""></a>
 													</div>
 												</div>
 											</div>
-											<div class="cmsms_column one_fourth">
+											<div class="cmsms_column goal_hieght">
 												<div class="aligncenter">
 													<div class="cmsms_img  cmsms_image_c fadeInUp animated" data-animation="fadeInUp" data-delay="600">
 														<a href="rolefire.html"><img src="images/ecosystem.jpg" alt=""></a>
 													</div>
 												</div>
 											</div>
-											<div class="cmsms_column one_fourth">
+											<div class="cmsms_column goal_hieght">
 												<div class="aligncenter">
 													<div class="cmsms_img  cmsms_image_c fadeInUp animated" data-animation="fadeInUp" data-delay="900">
 														<a href="casestudies.html"><img src="images/organic.jpg" alt=""></a>
 													</div>
 												</div>
 											</div>
-											<div class="cmsms_column one_fourth">
+											<div class="cmsms_column goal_hieght">
 												<div class="aligncenter">
 													<div class="cmsms_img  cmsms_image_c fadeInUp animated" data-animation="fadeInUp" data-delay="1200">
 														<a href="firebehaviour.html"><img src="images/biology.jpg" alt=""></a>
+													</div>
+												</div>
+											</div>
+											<div class="cmsms_column goal_hieght">
+												<div class="aligncenter">
+													<div class="cmsms_img  cmsms_image_c fadeInUp animated" data-animation="fadeInUp" data-delay="1200">
+														<a href="https://www.esri.com/en-us/disaster-response/disasters/wildfires"><img src="images/wildfire.jpg" alt=""></a>
 													</div>
 												</div>
 											</div>
@@ -666,31 +730,31 @@
 											<div class="cmsms_column one_first">
 												<div class="cmsms_stats stats_mode_counters stats_type_numbers stats_noborder" data-animation="fadeInUp" data-delay="400">
 													<div class="cmsms_stat_wrap one_fourth">
-														<div id="cmsms_stat_553e49e8075f6" class="cmsms_stat stat_has_titleicon" data-percent="1050000">
+														<div id="cmsms_stat_553e49e8075f6" class="cmsms_stat stat_has_titleicon" data-percent="32620000">
 															<div class="cmsms_stat_inner cmsms-icon-thumbs-up-5">
 																<span class="cmsms_stat_counter_wrap"><span class="cmsms_stat_prefix"></span><span class="cmsms_stat_counter">0</span><span class="cmsms_stat_suffix"></span></span>
-																<span class="cmsms_stat_title">Acres and More Rescued</span>
+																<span class="cmsms_stat_title">Acres Burned</span>
 															</div>
 														</div>
 													</div><div class="cmsms_stat_wrap one_fourth">
-														<div id="cmsms_stat_553e49e8076a4" class="cmsms_stat stat_has_titleicon" data-percent="1000">
+														<div id="cmsms_stat_553e49e8076a4" class="cmsms_stat stat_has_titleicon" data-percent="5678">
 															<div class="cmsms_stat_inner cmsms-icon-money-2">
-																<span class="cmsms_stat_counter_wrap"><span class="cmsms_stat_prefix">$</span><span class="cmsms_stat_counter">0</span><span class="cmsms_stat_suffix"></span></span>
-																<span class="cmsms_stat_title">Million and More Funds Collected</span>
+																<span class="cmsms_stat_counter_wrap"><span class="cmsms_stat_prefix"></span><span class="cmsms_stat_counter">0</span><span class="cmsms_stat_suffix"></span></span>
+																<span class="cmsms_stat_title">Wildfires till August 15, 2023</span>
 															</div>
 														</div>
 													</div><div class="cmsms_stat_wrap one_fourth">
-														<div id="cmsms_stat_553e49e80773a" class="cmsms_stat stat_has_titleicon" data-percent="14056900">
+														<div id="cmsms_stat_553e49e80773a" class="cmsms_stat stat_has_titleicon" data-percent="1102">
 															<div class="cmsms_stat_inner cmsms-icon-user-7">
 																<span class="cmsms_stat_counter_wrap"><span class="cmsms_stat_prefix"></span><span class="cmsms_stat_counter">0</span><span class="cmsms_stat_suffix"></span></span>
-																<span class="cmsms_stat_title">Eco-Enthusiasts and More</span>
+																<span class="cmsms_stat_title">Active Fires</span>
 															</div>
 														</div>
 													</div><div class="cmsms_stat_wrap one_fourth">
-														<div id="cmsms_stat_553e49e8077d1" class="cmsms_stat stat_has_titleicon" data-percent="50">
+														<div id="cmsms_stat_553e49e8077d1" class="cmsms_stat stat_has_titleicon" data-percent="115">
 															<div class="cmsms_stat_inner cmsms-icon-heart-7">
 																<span class="cmsms_stat_counter_wrap"><span class="cmsms_stat_prefix"></span><span class="cmsms_stat_counter">0</span><span class="cmsms_stat_suffix"></span></span>
-																<span class="cmsms_stat_title">Percent(%) Health Quality Improved</span>
+																<span class="cmsms_stat_title">Deaths</span>
 															</div>
 														</div>
 													</div>
@@ -701,14 +765,17 @@
 								</div>
 							</div>
 						</div>
-						<!--<div id="cmsms_row_5" class="cmsms_row cmsms_color_scheme_default">
+						<br>
+						<br>
+						
+						<div id="cmsms_row_5" class="cmsms_row cmsms_color_scheme_default">
 							<div class="cmsms_row_outer_parent">
 								<div class="cmsms_row_outer">
 									<div class="cmsms_row_inner">
 										<div class="cmsms_row_margin">
 											<div class="cmsms_column one_fourth"></div>
 											<div class="cmsms_column one_half">
-												<h4 id="cmsms_heading_553e49e807cad" class="cmsms_heading">Donate now to support the beavers and stop them from perishing.</h4>
+												<h4 id="cmsms_heading_553e49e807cad" class="cmsms_heading">Donate now to support us to fight the wildfires.</h4>
 											</div>
 											<div class="cmsms_column one_fourth"></div>
 										</div>
@@ -724,7 +791,7 @@
 											<div class="cmsms_column one_first">
 												<div id="cmsms_paypal_donations_553e49e8080d0" class="cmsms_paypal_donations_wrap">
 													<div class="cmsms_paypal_donations">
-														<a href="#" class="cmsms_button">Donate Now!</a>
+														<a href="images/WhatsApp Image 2023-08-16 at 8.35.06 AM.jpeg" class="cmsms_button">Donate Now!</a>
 													</div>
 												</div>
 											</div>
@@ -732,7 +799,7 @@
 									</div>
 								</div>
 							</div>
-						</div> -->
+						</div>
 						<div id="cmsms_row_7" class="cmsms_row cmsms_color_scheme_default" data-stellar-background-ratio="0.5">
 							<div class="cmsms_row_outer_parent">
 								<div class="cmsms_row_outer">
@@ -790,7 +857,7 @@
 														<article class="one_x_one project format-standard hentry pj-categs-home" data-category="home">
 															<div class="project_outer">
 																<figure class="cmsms_img_rollover_wrap preloader">
-																	<img width="580" height="460" src="images/Species Adaptations.jpg" class="full-width" alt="Species Adaptation" title="Species Adaptation"><div class="cmsms_img_rollover">
+																	<img width="580" height="460" src="images/WhatsApp Image 2023-08-16 at 09.06.43 (2).jpeg" class="full-width" alt="Species Adaptation" title="Species Adaptation"><div class="cmsms_img_rollover">
 																		<a href="speciesadaptations.html" title="Species Adaptation" class="cmsms_open_link">
 																			<span class="cmsms-icon-attach-6"></span>
 																		</a>

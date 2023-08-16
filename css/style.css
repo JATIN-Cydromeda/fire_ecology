@@ -897,6 +897,12 @@ hr,
 .one_fifth {
   width: 16%;
 }
+.goal_hieght{
+  position: relative;
+  float: left;
+  margin: 0 1%;
+  width: 18%;
+}
 .one_fourth {
   width: 21%;
 }
