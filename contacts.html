@@ -328,16 +328,94 @@
 <!-- _________________________ Finish Navigation _________________________ -->
 	</div>
 </div>
+<!-- Search Bar Start -->
 <div class="search_align">
 	<div class="search_bar_wrap">
-	  <form method="get" action="index.html" id="frmSearch">
+	  <form method="get" action="" id="frmSearch">
 		<p>
 		  <input name="s" placeholder="Search Here..." type="text" id="txtSearch">
 		  <button type="submit" class="cmsms-icon-search-7"></button>
 		</p>
+			<ul id="searchResults" class="options">
+			</ul>
 	  </form>
 	</div>
 </div>
+</div>
+</header>
+<script>
+const searchForm = document.querySelector('form');
+const searchInput = document.querySelector('#txtSearch');
+const searchResultsList = document.querySelector('#searchResults');
+
+// Function to search the website for keywords
+const searchWebsite = async (keywords) => {
+const lowercaseKeywords = keywords.toLowerCase();
+const searchResults = [];
+
+// Retrieve content from all <p> and <h> tags
+const paragraphTags = document.querySelectorAll('p');
+const headingTags = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+paragraphTags.forEach((p) => {
+const paragraphContent = p.textContent.toLowerCase();
+
+if (paragraphContent.includes(lowercaseKeywords)) {
+  searchResults.push({ content: p.textContent, element: p });
+}
+});
+
+headingTags.forEach((h) => {
+const headingContent = h.textContent.toLowerCase();
+
+if (headingContent.includes(lowercaseKeywords)) {
+  searchResults.push({ content: h.textContent, element: h });
+}
+});
+
+return searchResults;
+};
+
+// Function to scroll to the clicked element
+const scrollToElement = (element) => {
+element.scrollIntoView({ behavior: 'smooth' });
+};
+
+searchForm.addEventListener('submit', async (event) => {
+event.preventDefault();
+const searchQuery = searchInput.value.toLowerCase();
+
+// Clear previous search results
+searchResultsList.innerHTML = '';
+
+const searchResults = await searchWebsite(searchQuery);
+
+searchResults.forEach((result) => {
+const li = document.createElement('li');
+const a = document.createElement('a');
+const limitedContent = result.content.substring(0, 90); // Limit to 90 characters
+a.textContent = limitedContent + (result.content.length > 90 ? '...' : '');
+a.href = 'javascript:void(0)'; // Set a JavaScript void function
+
+// Scroll to the clicked element when the link is clicked
+a.addEventListener('click', () => {
+  scrollToElement(result.element);
+});
+
+li.appendChild(a);
+searchResultsList.appendChild(li);
+
+// Apply highlights
+const highlightRegExp = new RegExp(`(${searchQuery})`, 'gi');
+const highlightedContent = result.content.replace(
+  highlightRegExp,
+  '<span class="highlight">$1</span>'
+);
+result.element.innerHTML = highlightedContent;
+});
+});
+</script>
+<!-- Search Bar End --> 
 </div>
 </header>
 			<!-- _________________________ Finish Header _________________________ -->
@@ -382,6 +460,8 @@
 										<div class="cmsms_row_margin">
 											<div class="cmsms_column one_half">
 												<h3 id="cmsms_heading_555091c557200" class="cmsms_heading">Send Message</h3>
+												<br>
+												<br>
 												<div class="cmsms_contact_form">
 													<div class="cmsms-form-builder">
 														<div class="cmsms_notice cmsms_notice_success cmsms-icon-check-2 success_box widgetinfo" style="display:none;">
@@ -431,9 +511,14 @@
 														<form action="https://formsubmit.co/95a023961e1f96e44aed2a0c6d9fcc52" method="POST">
 															<input type="text" name="name" placeholder="Full Name" required>
 															<input type="email" name="Email" placeholder="Email" required>
+															<br>
+															<br>
 															<input type="text" name="Subject" placeholder="Subject" required>
-															<textarea name="Message" placeholder="Message" required></textarea>
-															<button type="submit">Send Message</button>
+															<input type="text" name="Message" placeholder="Message" required>
+															
+															<br>
+															<br>
+															<button type="submit" >Send Message</button>
 														</form>
 
 													<!--	<form action="https://formsubmit.co/el/3522679c8256643b05d6cd4b61e47be8" method="POST" >
@@ -489,7 +574,7 @@
 												<ul id="cmsms_icon_list_items_555091c558691" class="cmsms_icon_list_items cmsms_icon_list_type_list cmsms_icon_list_pos_left cmsms_color_type_border">
 													<li id="cmsms_icon_list_item_555091c5587e4" class="cmsms_icon_list_item cmsms-icon-location-7"> DPS Greater Noida, 201310, India </li>
 													<li id="cmsms_icon_list_item_555091c558872" class="cmsms_icon_list_item cmsms-icon-mobile-6">+91 9953615101 <br> +91 8802378324</li>
-													<li id="cmsms_icon_list_item_555091c5588fb" class="cmsms_icon_list_item cmsms-icon-mail-7">econature@gmail.com</li>
+													<li id="cmsms_icon_list_item_555091c5588fb" class="cmsms_icon_list_item cmsms-icon-mail-7">fireecology@gmail.com</li>
 												</ul>
 											</div>
 										</div>
@@ -524,7 +609,7 @@
 														<div class="pl_img">
 															<figure>
 																<a href="#">
-																	<img width="580" height="390" src="images/default_profile.png" class="attachment-blog-masonry-thumb" alt="Caroline Gerwig" title="Caroline Gerwig">
+																	<div style="background-image: url('images/jatin.jpg'); background-position: top; height: 600px; width: 580; background-size: cover;">
 																</a>
 															</figure>
 														</div>
@@ -550,7 +635,7 @@
 														<div class="pl_img">
 															<figure>
 																<a href="#">
-																	<div style="background-image: url('images/fekagrah.jpeg'); background-position: top; height: 600px; width: 580; background-size: cover;">
+																	<div style="background-image: url('images/ekagrah.jpeg'); background-position: top; height: 600px; width: 580; background-size: cover;">
 																</a>
 															</figure>
 														</div>

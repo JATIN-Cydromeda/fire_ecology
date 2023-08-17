@@ -21,7 +21,7 @@
 		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oxygen%3A300%2C400%2C700&amp;ver=4.2" type="text/css" media="all">
 		<link rel="stylesheet" href="css/jquery.isotope.css" type="text/css" media="screen">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-		
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
 		<script type="text/javascript" src="js/jquery.js"></script>
 		<script type="text/javascript" src="js/jquery-migrate.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/typesense@1/dist/typesense.min.js"></script>
@@ -500,93 +500,97 @@
 	<!-- _________________________ Finish Navigation _________________________ -->
 							</div>
 						</div>
+
+		<!-- Search Bar Start -->
 						<div class="search_align">
 							<div class="search_bar_wrap">
-							  <form method="get" action="index.html" id="frmSearch">
+							  <form method="get" action="" id="frmSearch">
 								<p>
 								  <input name="s" placeholder="Search Here..." type="text" id="txtSearch">
 								  <button type="submit" class="cmsms-icon-search-7"></button>
 								</p>
+									<ul id="searchResults" class="options">
+									</ul>
 							  </form>
 							</div>
 						</div>
 					</div>
 				</header>
-					<div class="menu-main-container" style="position: fixed; top: 0; z-index: 1000;">
-						<ul id="searchResults" class="sub-menu">
-						</ul>
-					</div>
-					<script>
-						const searchForm = document.querySelector('form');
-						const searchInput = document.querySelector('#txtSearch');
-						const searchResultsList = document.querySelector('#searchResults');
-					  
-						// Function to search the website for keywords
-						const searchWebsite = async (keywords) => {
-						  const lowercaseKeywords = keywords.toLowerCase();
-						  const searchResults = [];
-					  
-						  // Retrieve content from all <p> and <h> tags
-						  const paragraphTags = document.querySelectorAll('p');
-						  const headingTags = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-					  
-						  paragraphTags.forEach((p) => {
-							const paragraphContent = p.textContent.toLowerCase();
-					  
-							if (paragraphContent.includes(lowercaseKeywords)) {
-							  searchResults.push({ content: p.textContent, element: p });
-							}
-						  });
-					  
-						  headingTags.forEach((h) => {
-							const headingContent = h.textContent.toLowerCase();
-					  
-							if (headingContent.includes(lowercaseKeywords)) {
-							  searchResults.push({ content: h.textContent, element: h });
-							}
-						  });
-					  
-						  return searchResults;
-						};
-					  
-						// Function to scroll to the clicked element
-						const scrollToElement = (element) => {
-						  element.scrollIntoView({ behavior: 'smooth' });
-						};
-					  
-						searchForm.addEventListener('submit', async (event) => {
-						  event.preventDefault();
-						  const searchQuery = searchInput.value.toLowerCase();
-					  
-						  // Clear previous search results
-						  searchResultsList.innerHTML = '';
-					  
-						  const searchResults = await searchWebsite(searchQuery);
-					  
-						  searchResults.forEach((result) => {
-							const li = document.createElement('li');
-							const a = document.createElement('a');
-							a.textContent = result.content;
-							a.href = 'javascript:void(0)'; // Set a JavaScript void function
-					  
-							// Scroll to the clicked element when the link is clicked
-							a.addEventListener('click', () => {
-							  scrollToElement(result.element);
-							});
-					  
-							li.appendChild(a);
-							searchResultsList.appendChild(li);
-					  
-							// Remove previous highlights and apply new highlights
-							result.element.innerHTML = result.content; // Reset content
-							const highlightRegExp = new RegExp(`(${searchQuery})`, 'gi');
-							result.element.innerHTML = result.element.innerHTML.replace(
-							  highlightRegExp,
-							  '<span class="highlight">$1</span>'
-							);
-						  });
+				<script>
+					const searchForm = document.querySelector('form');
+					const searchInput = document.querySelector('#txtSearch');
+					const searchResultsList = document.querySelector('#searchResults');
+				  
+					// Function to search the website for keywords
+					const searchWebsite = async (keywords) => {
+					  const lowercaseKeywords = keywords.toLowerCase();
+					  const searchResults = [];
+				  
+					  // Retrieve content from all <p> and <h> tags
+					  const paragraphTags = document.querySelectorAll('p');
+					  const headingTags = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+				  
+					  paragraphTags.forEach((p) => {
+						const paragraphContent = p.textContent.toLowerCase();
+				  
+						if (paragraphContent.includes(lowercaseKeywords)) {
+						  searchResults.push({ content: p.textContent, element: p });
+						}
+					  });
+				  
+					  headingTags.forEach((h) => {
+						const headingContent = h.textContent.toLowerCase();
+				  
+						if (headingContent.includes(lowercaseKeywords)) {
+						  searchResults.push({ content: h.textContent, element: h });
+						}
+					  });
+				  
+					  return searchResults;
+					};
+				  
+					// Function to scroll to the clicked element
+					const scrollToElement = (element) => {
+					  element.scrollIntoView({ behavior: 'smooth' });
+					};
+				  
+					searchForm.addEventListener('submit', async (event) => {
+					  event.preventDefault();
+					  const searchQuery = searchInput.value.toLowerCase();
+				  
+					  // Clear previous search results
+					  searchResultsList.innerHTML = '';
+				  
+					  const searchResults = await searchWebsite(searchQuery);
+				  
+					  searchResults.forEach((result) => {
+						const li = document.createElement('li');
+						const a = document.createElement('a');
+						const limitedContent = result.content.substring(0, 90); // Limit to 90 characters
+						a.textContent = limitedContent + (result.content.length > 90 ? '...' : '');
+						a.href = 'javascript:void(0)'; // Set a JavaScript void function
+				  
+						// Scroll to the clicked element when the link is clicked
+						a.addEventListener('click', () => {
+						  scrollToElement(result.element);
 						});
-					  </script>		  
+				  
+						li.appendChild(a);
+						searchResultsList.appendChild(li);
+				  
+						// Apply highlights
+						const highlightRegExp = new RegExp(`(${searchQuery})`, 'gi');
+						const highlightedContent = result.content.replace(
+						  highlightRegExp,
+						  '<span class="highlight">$1</span>'
+						);
+						result.element.innerHTML = highlightedContent;
+					  });
+					});
+				  </script>
+		<!-- Search Bar End --> 
+					  
+					  
 	<!-- _________________________ Finish Header _________________________ -->
 	<!-- _________________________ Start Middle _________________________ -->
 				<section id="middle">
@@ -731,28 +735,28 @@
 												<div class="cmsms_stats stats_mode_counters stats_type_numbers stats_noborder" data-animation="fadeInUp" data-delay="400">
 													<div class="cmsms_stat_wrap one_fourth">
 														<div id="cmsms_stat_553e49e8075f6" class="cmsms_stat stat_has_titleicon" data-percent="32620000">
-															<div class="cmsms_stat_inner cmsms-icon-thumbs-up-5">
+															<div class="cmsms_stat_inner fa-solid fa-fire">
 																<span class="cmsms_stat_counter_wrap"><span class="cmsms_stat_prefix"></span><span class="cmsms_stat_counter">0</span><span class="cmsms_stat_suffix"></span></span>
 																<span class="cmsms_stat_title">Acres Burned</span>
 															</div>
 														</div>
 													</div><div class="cmsms_stat_wrap one_fourth">
 														<div id="cmsms_stat_553e49e8076a4" class="cmsms_stat stat_has_titleicon" data-percent="5678">
-															<div class="cmsms_stat_inner cmsms-icon-money-2">
+															<div class="cmsms_stat_inner fa-solid fa-fire-flame-simple">
 																<span class="cmsms_stat_counter_wrap"><span class="cmsms_stat_prefix"></span><span class="cmsms_stat_counter">0</span><span class="cmsms_stat_suffix"></span></span>
 																<span class="cmsms_stat_title">Wildfires till August 15, 2023</span>
 															</div>
 														</div>
 													</div><div class="cmsms_stat_wrap one_fourth">
 														<div id="cmsms_stat_553e49e80773a" class="cmsms_stat stat_has_titleicon" data-percent="1102">
-															<div class="cmsms_stat_inner cmsms-icon-user-7">
+															<div class="cmsms_stat_inner fa-solid fa-fire-flame-curved">
 																<span class="cmsms_stat_counter_wrap"><span class="cmsms_stat_prefix"></span><span class="cmsms_stat_counter">0</span><span class="cmsms_stat_suffix"></span></span>
 																<span class="cmsms_stat_title">Active Fires</span>
 															</div>
 														</div>
 													</div><div class="cmsms_stat_wrap one_fourth">
 														<div id="cmsms_stat_553e49e8077d1" class="cmsms_stat stat_has_titleicon" data-percent="115">
-															<div class="cmsms_stat_inner cmsms-icon-heart-7">
+															<div class="cmsms_stat_inner fa-solid fa-skull">
 																<span class="cmsms_stat_counter_wrap"><span class="cmsms_stat_prefix"></span><span class="cmsms_stat_counter">0</span><span class="cmsms_stat_suffix"></span></span>
 																<span class="cmsms_stat_title">Deaths</span>
 															</div>
@@ -903,7 +907,7 @@
 														<article class="one_x_one project format-standard hentry pj-categs-home pj-categs-water" data-category="home water">
 															<div class="project_outer">
 																<figure class="cmsms_img_rollover_wrap preloader">
-																	<img width="580" height="460" src="images/Climate Change and Fire.jpg" class="full-width" alt="Climate Change and Fire" title="Climate Change and Fire">
+																	<img width="580" height="460" src="images/WhatsApp Image 2023-08-16 at 09.06.42 (3).jpeg" class="full-width" alt="Climate Change and Fire" title="Climate Change and Fire">
 																	<div class="cmsms_img_rollover">
 																		<a href="climatechange.html" title="Climate Change and Fire" class="cmsms_open_link">
 																			<span class="cmsms-icon-attach-6"></span>
@@ -1049,7 +1053,7 @@
 													<li id="cmsms_icon_list_item_553e49e81efbc" class="cmsms_icon_list_item">
 														<div class="cmsms_icon_list_item_inner">
 															<div class="cmsms_icon_list_icon_wrap">
-																<span class="cmsms_icon_list_icon cmsms-icon-cloud-7"></span>
+																<span class="cmsms_icon_list_icon fa-solid fa-user-graduate"></span>
 															</div>
 															<div class="cmsms_icon_list_item_content">
 																<h2 class="cmsms_icon_list_item_title">Education</h2>

@@ -1,13 +1,4 @@
-/**
- * @package 	WordPress
- * @subpackage 	EcoNature
- * @version 	1.1.0
- * 
- * Theme Custom Scripts
- * Created by CMSMasters
- * 
- */
- 
+
 "use strict";
 
 

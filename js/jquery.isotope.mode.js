@@ -1,17 +1,4 @@
-/**
- * @package 	WordPress
- * @subpackage 	EcoNature
- * @version		1.1.0
- * 
- * Modes & Functions for jQuery Isotope Plugin
- * Created by CMSMasters
- * 
- */
 
-
-"use strict";
-
-/* Isotope Timeline Layout Mode */
 jQuery.Isotope.prototype._spineAlignReset = function () { 
 	this.spineAlign = { 
 		colA : 	0, 

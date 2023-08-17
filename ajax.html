@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Polls App</title>
+  <style>
+    .question {
+      margin-bottom: 10px;
+    }
+    
+    .bar-chart {
+      width: 100%;
+      background-color: #f2f2f2;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    
+    .bar {
+      height: 20px;
+      background-color: #4caf50;
+      transition: width 0.5s;
+    }
+    
+    .bar-label {
+      margin-top: 5px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Polls App</h1>
+  
+  <div class="question">
+    <h2>Question 1: What is your favorite color?</h2>
+    <input type="radio" name="question1" value="red"> Red<br>
+    <input type="radio" name="question1" value="blue"> Blue<br>
+    <input type="radio" name="question1" value="green"> Green<br>
+    <div class="bar-chart">
+      <div class="bar" id="question1-bar"></div>
+      <div class="bar-label" id="question1-label"></div>
+    </div>
+  </div>
+  
+  <div class="question">
+    <h2>Question 2: Which programming language do you prefer?</h2>
+    <input type="radio" name="question2" value="javascript"> JavaScript<br>
+    <input type="radio" name="question2" value="python"> Python<br>
+    <input type="radio" name="question2" value="java"> Java<br>
+    <div class="bar-chart">
+      <div class="bar" id="question2-bar"></div>
+      <div class="bar-label" id="question2-label"></div>
+    </div>
+  </div>
+  
+  <button onclick="submitPoll()">Submit</button>
+  
+  <script>
+    function submitPoll() {
+      // Get the selected answers
+      const answer1 = document.querySelector('input[name="question1"]:checked').value;
+      const answer2 = document.querySelector('input[name="question2"]:checked').value;
+      
+      // Display the results
+      alert(`Your answers:\nQuestion 1: ${answer1}\nQuestion 2: ${answer2}`);
+      
+      // Calculate and display the percentage bars
+      const question1Bar = document.getElementById('question1-bar');
+      const question1Label = document.getElementById('question1-label');
+      const question2Bar = document.getElementById('question2-bar');
+      const question2Label = document.getElementById('question2-label');
+      
+      const question1Percentage = calculatePercentage(answer1);
+      const question2Percentage = calculatePercentage(answer2);
+      
+      question1Bar.style.width = question1Percentage + '%';
+      question1Label.textContent = question1Percentage + '%';
+      
+      question2Bar.style.width = question2Percentage + '%';
+      question2Label.textContent = question2Percentage + '%';
+      
+      // You can also store the results in a database using AJAX or send them to a server-side script for further processing
+    }
+    
+    function calculatePercentage(answer) {
+      // You can customize this function to calculate the percentage based on your specific requirements
+      if (answer === 'red') {
+        return 40;
+      } else if (answer === 'blue') {
+        return 30;
+      } else if (answer === 'green') {
+        return 30;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -609,16 +609,94 @@
 <!-- _________________________ Finish Navigation _________________________ -->
 </div>
 </div>
+<!-- Search Bar Start -->
 <div class="search_align">
-<div class="search_bar_wrap">
-  <form method="get" action="index.html" id="frmSearch">
-	<p>
-	  <input name="s" placeholder="Search Here..." type="text" id="txtSearch">
-	  <button type="submit" class="cmsms-icon-search-7"></button>
-	</p>
-  </form>
+	<div class="search_bar_wrap">
+	  <form method="get" action="" id="frmSearch">
+		<p>
+		  <input name="s" placeholder="Search Here..." type="text" id="txtSearch">
+		  <button type="submit" class="cmsms-icon-search-7"></button>
+		</p>
+			<ul id="searchResults" class="options">
+			</ul>
+	  </form>
+	</div>
 </div>
 </div>
+</header>
+<script>
+const searchForm = document.querySelector('form');
+const searchInput = document.querySelector('#txtSearch');
+const searchResultsList = document.querySelector('#searchResults');
+
+// Function to search the website for keywords
+const searchWebsite = async (keywords) => {
+const lowercaseKeywords = keywords.toLowerCase();
+const searchResults = [];
+
+// Retrieve content from all <p> and <h> tags
+const paragraphTags = document.querySelectorAll('p');
+const headingTags = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+paragraphTags.forEach((p) => {
+const paragraphContent = p.textContent.toLowerCase();
+
+if (paragraphContent.includes(lowercaseKeywords)) {
+  searchResults.push({ content: p.textContent, element: p });
+}
+});
+
+headingTags.forEach((h) => {
+const headingContent = h.textContent.toLowerCase();
+
+if (headingContent.includes(lowercaseKeywords)) {
+  searchResults.push({ content: h.textContent, element: h });
+}
+});
+
+return searchResults;
+};
+
+// Function to scroll to the clicked element
+const scrollToElement = (element) => {
+element.scrollIntoView({ behavior: 'smooth' });
+};
+
+searchForm.addEventListener('submit', async (event) => {
+event.preventDefault();
+const searchQuery = searchInput.value.toLowerCase();
+
+// Clear previous search results
+searchResultsList.innerHTML = '';
+
+const searchResults = await searchWebsite(searchQuery);
+
+searchResults.forEach((result) => {
+const li = document.createElement('li');
+const a = document.createElement('a');
+const limitedContent = result.content.substring(0, 90); // Limit to 90 characters
+a.textContent = limitedContent + (result.content.length > 90 ? '...' : '');
+a.href = 'javascript:void(0)'; // Set a JavaScript void function
+
+// Scroll to the clicked element when the link is clicked
+a.addEventListener('click', () => {
+  scrollToElement(result.element);
+});
+
+li.appendChild(a);
+searchResultsList.appendChild(li);
+
+// Apply highlights
+const highlightRegExp = new RegExp(`(${searchQuery})`, 'gi');
+const highlightedContent = result.content.replace(
+  highlightRegExp,
+  '<span class="highlight">$1</span>'
+);
+result.element.innerHTML = highlightedContent;
+});
+});
+</script>
+<!-- Search Bar End --> 
 </div>
 </header>
 			<!-- _________________________ Finish Header _________________________ -->

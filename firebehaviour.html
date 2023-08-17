@@ -927,16 +927,94 @@
 <!-- _________________________ Finish Navigation _________________________ -->
 </div>
 </div>
+<!-- Search Bar Start -->
 <div class="search_align">
-<div class="search_bar_wrap">
-  <form method="get" action="index.html" id="frmSearch">
-    <p>
-      <input name="s" placeholder="Search Here..." type="text" id="txtSearch">
-      <button type="submit" class="cmsms-icon-search-7"></button>
-    </p>
-  </form>
+    <div class="search_bar_wrap">
+      <form method="get" action="" id="frmSearch">
+        <p>
+          <input name="s" placeholder="Search Here..." type="text" id="txtSearch">
+          <button type="submit" class="cmsms-icon-search-7"></button>
+        </p>
+            <ul id="searchResults" class="options">
+            </ul>
+      </form>
+    </div>
 </div>
 </div>
+</header>
+<script>
+const searchForm = document.querySelector('form');
+const searchInput = document.querySelector('#txtSearch');
+const searchResultsList = document.querySelector('#searchResults');
+
+// Function to search the website for keywords
+const searchWebsite = async (keywords) => {
+const lowercaseKeywords = keywords.toLowerCase();
+const searchResults = [];
+
+// Retrieve content from all <p> and <h> tags
+const paragraphTags = document.querySelectorAll('p');
+const headingTags = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+paragraphTags.forEach((p) => {
+const paragraphContent = p.textContent.toLowerCase();
+
+if (paragraphContent.includes(lowercaseKeywords)) {
+  searchResults.push({ content: p.textContent, element: p });
+}
+});
+
+headingTags.forEach((h) => {
+const headingContent = h.textContent.toLowerCase();
+
+if (headingContent.includes(lowercaseKeywords)) {
+  searchResults.push({ content: h.textContent, element: h });
+}
+});
+
+return searchResults;
+};
+
+// Function to scroll to the clicked element
+const scrollToElement = (element) => {
+element.scrollIntoView({ behavior: 'smooth' });
+};
+
+searchForm.addEventListener('submit', async (event) => {
+event.preventDefault();
+const searchQuery = searchInput.value.toLowerCase();
+
+// Clear previous search results
+searchResultsList.innerHTML = '';
+
+const searchResults = await searchWebsite(searchQuery);
+
+searchResults.forEach((result) => {
+const li = document.createElement('li');
+const a = document.createElement('a');
+const limitedContent = result.content.substring(0, 90); // Limit to 90 characters
+a.textContent = limitedContent + (result.content.length > 90 ? '...' : '');
+a.href = 'javascript:void(0)'; // Set a JavaScript void function
+
+// Scroll to the clicked element when the link is clicked
+a.addEventListener('click', () => {
+  scrollToElement(result.element);
+});
+
+li.appendChild(a);
+searchResultsList.appendChild(li);
+
+// Apply highlights
+const highlightRegExp = new RegExp(`(${searchQuery})`, 'gi');
+const highlightedContent = result.content.replace(
+  highlightRegExp,
+  '<span class="highlight">$1</span>'
+);
+result.element.innerHTML = highlightedContent;
+});
+});
+</script>
+<!-- Search Bar End --> 
 </div>
 </header>
         <!-- _________________________ Finish Header _________________________ -->
@@ -952,172 +1030,7 @@
                 </div>
                 <div class="middle_inner">
                     <!-- Heading -->
-				<div id="cmsms_row_title_2" class="cmsms_row cmsms_color_scheme_default">
-					<div class="cmsms_row_outer_parent">
-						<div class="cmsms_row_outer">
-							<div class="cmsms_row_inner">
-								<div class="cmsms_row_margin">
-									<div class="cmsms_column one_first">
-										<h3 class="cmsms_heading align_left cmsms_valid_title">Explanation of Fire Behaviour and Influencing Factors</h3>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-                <br>
-                <br>
-                    <div id="cmsms_row_5548a7b76993b" class="cmsms_row cmsms_color_scheme_default">
-                        <div class="cmsms_row_outer_parent">
-                            <div class="cmsms_row_outer">
-                                <div class="cmsms_row_inner">
-                                    <div class="cmsms_row_margin">
-                                        <div class="cmsms_column one_first">
-                                            <div class="quote_grid quote_one">
-                                                <div class="quote_vert"></div>
-                                                <div class="quotes_list">
-                                                    <div class="cmsms_quote">
-                                                        <article class="cmsms_quote_inner">
-                                                            <div class="quote_content_wrap">
-                                                                
-                                                                <div class="quote_content">
-                                                                    <p>Fire behavior refers to the way a fire spreads, behaves, and interacts with its environment. Understanding fire behavior is essential for effective fire management, prevention, and safety. Several factors influence fire behavior, including:</p>
-                                                                </div>
-                                                                
-                                                                
-                                                            </div>
-                                                        </article>
-                                                    </div>
-                                                    <div class="cmsms_quote">
-                                                        <article class="cmsms_quote_inner">
-                                                            <div class="quote_content_wrap">
-                                                                <h6 class="quote_title">Fuel</h6>
-                                                                <div class="quote_content">
-                                                                    <p>Fuel refers to the materials that can burn, including vegetation, trees, grass, leaves, and even buildings. The type, quantity, arrangement, and moisture content of fuel significantly impact fire behavior. Dry, dead vegetation is more susceptible to ignition and can contribute to faster fire spread.</p>
-                                                                </div>
-                                                                
-                                                            </div>
-                                                        </article>
-                                                    </div>
-                                                
-                                                <div class="quotes_list">
-                                                    <div class="cmsms_quote">
-                                                        <article class="cmsms_quote_inner">
-                                                            <div class="quote_content_wrap">
-                                                                <h6 class="quote_title">Weather</h6>
-                                                                <div class="quote_content">
-                                                                    <p>Weather conditions have a profound influence on fire behavior. Factors like temperature, humidity, wind speed, and wind direction determine the fire's rate of spread, intensity, and direction. Low humidity and strong winds can increase fire spread, while higher humidity and calmer conditions may slow it down.</p>
-                                                                </div>
-                                                                
-                                                            </div>
-                                                        </article>
-                                                    </div>
-                                                    <div class="cmsms_quote">
-                                                        <article class="cmsms_quote_inner">
-                                                            <div class="quote_content_wrap">
-                                                                <h6 class="quote_title">Topography</h6>
-                                                                <div class="quote_content">
-                                                                    <p>The shape of the land, including hills, valleys, slopes, and canyons, affects fire behavior. Fires tend to move more quickly uphill due to the preheating of fuel and increased exposure to wind. Canyons and valleys can funnel and intensify fire behavior by creating chimney-like effects.</p>
-                                                                </div>
-                                                                
-                                                                
-                                                            </div>
-                                                        </article>
-                                                    
-                                                    </div>
-                                                    <div class="cmsms_quote">
-                                                        <article class="cmsms_quote_inner">
-                                                            <div class="quote_content_wrap">
-                                                                <h6 class="quote_title">Fireline Orientation</h6>
-                                                                <div class="quote_content">
-                                                                    <p>The direction in which a fire is spreading relative to the wind can significantly impact its behavior. Fires spreading with the wind (upslope) tend to move more quickly and have higher intensities compared to fires spreading against the wind (downslope).</p>
-                                                                </div>
-                                                            </div>    
-                                                                
-                                                            
-                                                        </article>
-                                                    </div>
-                                                    <div class="cmsms_quote">
-                                                        <article class="cmsms_quote_inner">
-                                                            <div class="quote_content_wrap">
-                                                                <h6 class="quote_title">Ignition Source</h6>
-                                                                <div class="quote_content">
-                                                                    <p>The source that starts the fire, whether human-caused (e.g., campfires, discarded cigarettes) or natural (e.g., lightning), influences the fire's initial intensity and location. Human-caused fires often occur near infrastructure and residential areas, increasing the need for rapid response.</p>
-                                                                </div>
-                                                                
-                                                                
-                                                            </div>
-                                                        </article>
-                                                    </div>    
-                                                    <div class="cmsms_quote">
-                                                        <article class="cmsms_quote_inner">
-                                                            <div class="quote_content_wrap">
-                                                                <h6 class="quote_title">Rate of Spread</h6>
-                                                                <div class="quote_content">
-                                                                    <p>The rate at which a fire advances across the landscape is determined by factors such as fuel type, fuel moisture, wind speed, and topography. A higher rate of spread can lead to more intense fire behavior and greater challenges for firefighting efforts.</p>
-                                                                </div>
-                                                                
-                                                                
-                                                            </div>
-                                                        </article>
-                                                    </div>
-                                                    <div class="cmsms_quote">
-                                                        <article class="cmsms_quote_inner">
-                                                            <div class="quote_content_wrap">
-                                                                <h6 class="quote_title">Fire Intensity</h6>
-                                                                <div class="quote_content">
-                                                                    <p>Fire intensity refers to the amount of energy released per unit of time. It influences the fire's impact on the landscape and structures. Intense fires can generate stronger convection currents, produce larger flames, and create ember showers that can ignite new fires ahead of the main fire front.</p>
-                                                                </div>
-                                                                
-                                                                
-                                                            </div>
-                                                        </article>
-                                                    </div>
-                                                    <div class="cmsms_quote">
-                                                        <article class="cmsms_quote_inner">
-                                                            <div class="quote_content_wrap">
-                                                                <h6 class="quote_title">Spotting</h6>
-                                                                <div class="quote_content">
-                                                                    <p>Spotting occurs when wind carries burning embers or firebrands ahead of the main fire, igniting new fires at a distance. Spotting can significantly increase the rate of fire spread and contribute to the complexity of firefighting efforts.</p>
-                                                                </div>
-                                                                
-                                                                
-                                                            </div>
-                                                        </article>
-                                                    </div>
-                                                    <div class="cmsms_quote">
-                                                        <article class="cmsms_quote_inner">
-                                                            <div class="quote_content_wrap">
-                                                                <h6 class="quote_title">Fire Behavior Predictive Models</h6>
-                                                                <div class="quote_content">
-                                                                    <p>Fire scientists and managers use computer models to predict fire behavior based on input data such as weather, fuel, and topography. These models help anticipate how a fire might spread and assist in making informed decisions for fire management and resource allocation.</p>
-                                                                </div>
-                                                                
-                                                                
-                                                            </div>
-                                                        </article>
-                                                    </div>
-                                                    <div class="cmsms_quote">
-                                                        <article class="cmsms_quote_inner">
-                                                            <div class="quote_content_wrap">
-                                                                
-                                                                <div class="quote_content">
-                                                                    <p>By understanding the complex interplay of these factors, fire managers can make informed decisions to control and mitigate wildfires, protect communities and ecosystems, and ensure the safety of firefighting personnel and the public.</p>
-                                                                </div>
-                                                                
-                                                                
-                                                            </div>
-                                                        </article>
-                                                    </div>
-                                                </div>
-                                                <div class="quotes_list"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+				
                     <div id="cmsms_row_8" class="cmsms_row cmsms_color_scheme_default">
                         <div class="cmsms_row_outer_parent">
                             <div class="cmsms_row_outer">
@@ -1218,6 +1131,7 @@
                                                 <br>
                                                 <p>By combining real-time monitoring techniques, advanced fire modeling, and predictive tools, fire managers and agencies can better understand fire dynamics, plan effective responses, and minimize risks to both human lives and ecosystems. These tools are essential for proactive fire management and emergency response strategies.</p>
                                             </div>
+                                            <img src="images/triangle.jpg" style="width: 500;">
                                             <div id="cmsms_divider_5551a75f00d2d" class="cmsms_divider cmsms_divider_width_long cmsms_divider_pos_center"></div>
                                         </div>
                                     </div>
@@ -1225,6 +1139,175 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div id="cmsms_row_8" class="cmsms_row cmsms_color_scheme_default">
+                        <div class="cmsms_row_outer_parent">
+                            <div class="cmsms_row_outer">
+                                <div class="cmsms_row_inner">
+                                    <div class="cmsms_row_margin">
+                                        <div class="cmsms_column one_first">
+                                            <h2 id="cmsms_heading_553e49e81ea44" class="cmsms_heading">Explanation of Fire Behaviour and Influencing Factors</h2>
+                                            <br>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                        <div id="cmsms_row_5548a7b76993b" class="cmsms_row cmsms_color_scheme_default">
+                            <div class="cmsms_row_outer_parent">
+                                <div class="cmsms_row_outer">
+                                    <div class="cmsms_row_inner">
+                                        <div class="cmsms_row_margin">
+                                            <div class="cmsms_column one_first">
+                                                <div class="quote_grid quote_one">
+                                                    <div class="quote_vert"></div>
+                                                    <div class="quotes_list">
+                                                        <div class="cmsms_quote">
+                                                            <article class="cmsms_quote_inner">
+                                                                <div class="quote_content_wrap">
+                                                                    
+                                                                    <div class="quote_content">
+                                                                        <p>Fire behavior refers to the way a fire spreads, behaves, and interacts with its environment. Understanding fire behavior is essential for effective fire management, prevention, and safety. Several factors influence fire behavior, including:</p>
+                                                                    </div>
+                                                                    
+                                                                    
+                                                                </div>
+                                                            </article>
+                                                        </div>
+                                                        <div class="cmsms_quote">
+                                                            <article class="cmsms_quote_inner">
+                                                                <div class="quote_content_wrap">
+                                                                    <h6 class="quote_title">Fuel</h6>
+                                                                    <div class="quote_content">
+                                                                        <p>Fuel refers to the materials that can burn, including vegetation, trees, grass, leaves, and even buildings. The type, quantity, arrangement, and moisture content of fuel significantly impact fire behavior. Dry, dead vegetation is more susceptible to ignition and can contribute to faster fire spread.</p>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </article>
+                                                        </div>
+                                                    
+                                                    <div class="quotes_list">
+                                                        <div class="cmsms_quote">
+                                                            <article class="cmsms_quote_inner">
+                                                                <div class="quote_content_wrap">
+                                                                    <h6 class="quote_title">Weather</h6>
+                                                                    <div class="quote_content">
+                                                                        <p>Weather conditions have a profound influence on fire behavior. Factors like temperature, humidity, wind speed, and wind direction determine the fire's rate of spread, intensity, and direction. Low humidity and strong winds can increase fire spread, while higher humidity and calmer conditions may slow it down.</p>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </article>
+                                                        </div>
+                                                        <div class="cmsms_quote">
+                                                            <article class="cmsms_quote_inner">
+                                                                <div class="quote_content_wrap">
+                                                                    <h6 class="quote_title">Topography</h6>
+                                                                    <div class="quote_content">
+                                                                        <p>The shape of the land, including hills, valleys, slopes, and canyons, affects fire behavior. Fires tend to move more quickly uphill due to the preheating of fuel and increased exposure to wind. Canyons and valleys can funnel and intensify fire behavior by creating chimney-like effects.</p>
+                                                                    </div>
+                                                                    
+                                                                    
+                                                                </div>
+                                                            </article>
+                                                        
+                                                        </div>
+                                                        <div class="cmsms_quote">
+                                                            <article class="cmsms_quote_inner">
+                                                                <div class="quote_content_wrap">
+                                                                    <h6 class="quote_title">Fireline Orientation</h6>
+                                                                    <div class="quote_content">
+                                                                        <p>The direction in which a fire is spreading relative to the wind can significantly impact its behavior. Fires spreading with the wind (upslope) tend to move more quickly and have higher intensities compared to fires spreading against the wind (downslope).</p>
+                                                                    </div>
+                                                                </div>    
+                                                                    
+                                                                
+                                                            </article>
+                                                        </div>
+                                                        <div class="cmsms_quote">
+                                                            <article class="cmsms_quote_inner">
+                                                                <div class="quote_content_wrap">
+                                                                    <h6 class="quote_title">Ignition Source</h6>
+                                                                    <div class="quote_content">
+                                                                        <p>The source that starts the fire, whether human-caused (e.g., campfires, discarded cigarettes) or natural (e.g., lightning), influences the fire's initial intensity and location. Human-caused fires often occur near infrastructure and residential areas, increasing the need for rapid response.</p>
+                                                                    </div>
+                                                                    
+                                                                    
+                                                                </div>
+                                                            </article>
+                                                        </div>    
+                                                        <div class="cmsms_quote">
+                                                            <article class="cmsms_quote_inner">
+                                                                <div class="quote_content_wrap">
+                                                                    <h6 class="quote_title">Rate of Spread</h6>
+                                                                    <div class="quote_content">
+                                                                        <p>The rate at which a fire advances across the landscape is determined by factors such as fuel type, fuel moisture, wind speed, and topography. A higher rate of spread can lead to more intense fire behavior and greater challenges for firefighting efforts.</p>
+                                                                    </div>
+                                                                    
+                                                                    
+                                                                </div>
+                                                            </article>
+                                                        </div>
+                                                        <div class="cmsms_quote">
+                                                            <article class="cmsms_quote_inner">
+                                                                <div class="quote_content_wrap">
+                                                                    <h6 class="quote_title">Fire Intensity</h6>
+                                                                    <div class="quote_content">
+                                                                        <p>Fire intensity refers to the amount of energy released per unit of time. It influences the fire's impact on the landscape and structures. Intense fires can generate stronger convection currents, produce larger flames, and create ember showers that can ignite new fires ahead of the main fire front.</p>
+                                                                    </div>
+                                                                    
+                                                                    
+                                                                </div>
+                                                            </article>
+                                                        </div>
+                                                        <div class="cmsms_quote">
+                                                            <article class="cmsms_quote_inner">
+                                                                <div class="quote_content_wrap">
+                                                                    <h6 class="quote_title">Spotting</h6>
+                                                                    <div class="quote_content">
+                                                                        <p>Spotting occurs when wind carries burning embers or firebrands ahead of the main fire, igniting new fires at a distance. Spotting can significantly increase the rate of fire spread and contribute to the complexity of firefighting efforts.</p>
+                                                                    </div>
+                                                                    
+                                                                    
+                                                                </div>
+                                                            </article>
+                                                        </div>
+                                                        <div class="cmsms_quote">
+                                                            <article class="cmsms_quote_inner">
+                                                                <div class="quote_content_wrap">
+                                                                    <h6 class="quote_title">Fire Behavior Predictive Models</h6>
+                                                                    <div class="quote_content">
+                                                                        <p>Fire scientists and managers use computer models to predict fire behavior based on input data such as weather, fuel, and topography. These models help anticipate how a fire might spread and assist in making informed decisions for fire management and resource allocation.</p>
+                                                                    </div>
+                                                                    
+                                                                    
+                                                                </div>
+                                                            </article>
+                                                        </div>
+                                                        <div class="cmsms_quote">
+                                                            <article class="cmsms_quote_inner">
+                                                                <div class="quote_content_wrap">
+                                                                    
+                                                                    <div class="quote_content">
+                                                                        <p>By understanding the complex interplay of these factors, fire managers can make informed decisions to control and mitigate wildfires, protect communities and ecosystems, and ensure the safety of firefighting personnel and the public.</p>
+                                                                    </div>
+                                                                    
+                                                                    
+                                                                </div>
+                                                            </article>
+                                                        </div>
+                                                    </div>
+                                                    <div class="quotes_list"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     <div id="cmsms_row_5548a7b76d2f5" class="cmsms_row cmsms_color_scheme_first" data-stellar-background-ratio="0.5">
                         <div class="cmsms_row_outer_parent">
                             <div class="cmsms_row_outer">

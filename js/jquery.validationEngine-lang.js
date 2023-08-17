@@ -1,9 +1,3 @@
- /* 
- *
- * Form Validation Script
- * Created by CMSMasters
- * 
- */
 
 
 (function($){
