@@ -1,2 +1,2 @@
-# fire-ecology
-Fire ecology
+# Fire Ecology
+Run index.html to open the site
