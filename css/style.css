@@ -1,3 +1,11 @@
+/**
+
+Made Solely By Jatin 
+ph no. 8802378324
+email jatin.dixit.personal@gmail.com
+
+**/
+
 html,
 body,
 div,
@@ -5082,6 +5090,9 @@ body .headline {
   line-height: 80px;
 }
 .cmsms_icon_list_items .cmsms_icon_list_item .cmsms_icon_list_item_title {
+  font-size: large;
+  font-weight: 500;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   margin-bottom: 10px;
 }
 .cmsms_icon_list_items.cmsms_icon_list_pos_right .cmsms_icon_list_item:before {
